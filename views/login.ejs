@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>登录</title>
+    <script src='/javascripts/jquery.min.js'></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    11111
+    <label>
+        username:
+        <input type="text" class="username"/>
+    </label>
+    <label>
+        password:
+        <input type="text" class="password" />
+    </label>
+    <button onclick="login()">submit</button>
+    
+    <script>
+        getHost();
+        function getHost(){
+            var host = window.location.host;
+            console.log(host)
+            return host;
+        }
+
+        function login(){
+            var username = $(".username").val();
+            var password = $(".password").val();
+            var dataJson = {"username":username,"password":password}
+            $.ajax({
+                method:"post",
+                url:'/login',
+                data:dataJson,
+                success:function(data){
+                    if(data.result == '0'){
+                        console.log('密码错误')
+                    }else{
+                        console.log('登录成功')
+                    }
+                },
+                error:function(err){
+                    console.log('err',err)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
