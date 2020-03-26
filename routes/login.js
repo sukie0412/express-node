@@ -10,20 +10,19 @@ router.get('/',function(req, res, next){
 
 /* POST login page */
 router.post('/',function(req, res, next){
-    console.log('post---login');
     //获取请求传递过来的数据
     var currentData = req.body;
     var name = req.body.username;
     var psw = req.body.password;
     console.log(currentData);
-    console.log(name,psw)
+
     //模拟数据库查询判断，设置返回数据str
     var selectSQL = "select * from user where username = '"+ name +"' and password = '"+ psw +"' ";
     db.query(selectSQL , function(err, rows) {
         console.log(rows);
         if (err) {
             throw err;
-        }else if(rows.length){
+        }else if(rows.length != 0){
             res.json({ result: true });
         }else{
             res.json({ result: false });

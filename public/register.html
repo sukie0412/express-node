@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册</title>
+    <script src="javascripts/jquery.min.js"></script>
+</head>
+<body>
+        <label>
+            username:
+            <input type="text" class="username" />
+        </label>
+        <label>
+            password:
+            <input type="text" class="password" />
+        </label>
+        <button onclick="register()">submit</button>
+        <div>
+            <a href="login.html">已有账号，点我登录</a>
+        </div>
+
+        <script>
+            function register(){
+                var username = $(".username").val();
+                var password = $(".password").val();
+                var dataJson = {
+                    "username": username,
+                    "password": password
+                }
+
+                $.ajax({
+                method: "post",
+                url: '/register',
+                data: dataJson,
+                success: function (data) {
+                    if(data.result == true){
+                        console.log('注册成功');
+                        window.location.href = 'index.html';
+                    }else if(data.result == "repeat"){
+                        console.log("用户名已存在");
+                    }else{
+                        console.log('注册失败')
+                    }
+                },
+                error: function (err) {
+                console.log('err',err)
+
+                }
+                })
+
+            }
+        </script>
+</body>
+</html>
