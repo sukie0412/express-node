@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tinymce</title>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="js/tinymce_5.2.1/tinymce/js/tinymce/jquery.tinymce.min.js" referrerpolicy="origin"></script> -->
+    <script type="text/javascript" src="javascripts/tinymce_5.2.1_dev/tinymce/js/tinymce/tinymce.min.js"></script>
+    <!-- <script type="text/javascript" src="js/kindeditor/kindeditor-all-min.js"></script>
+    <script type="text/javascript" src="js/kindeditor/lang/zh-CN.js"></script> -->
+    
+</head>
+<body>
+    <!-- <textarea id="editor_id" name="content" style="width:700px;height:300px;"></textarea> -->
+    <textarea id="mytextarea"></textarea>
+
+    <script>
+    tinymce.init({
+        selector: '#mytextarea',
+        language: "zh_CN",
+        menubar: false,//隐藏菜单栏
+        branding: false,//隐藏右下角技术支持
+        elementpath: false,//隐藏底栏的元素路径
+        resize: false,//文本框右下角拖动鼠标调整编辑器高度，默认true
+        min_height: 300,//最小高度
+        plugins: 'autoresize',
+        toolbar: 'undo redo removeformat forecolor backcolor bold italic underline | alignleft aligncenter alignright alignjustify | '
+        +
+        'formatselect | fontselect | fontsizeselect | bullist numlist | blockquote anchor ltrrtl emoticons| restoredraft|'
+        + ' hr |link image media | preview searchreplace|table|wordcount code bdmap' ,
+        fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px',
+        font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;' +
+        'Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;' +
+        'Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;' +
+        'Terminal=terminal,monaco;Times New Roman=times new roman,times;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats;',
+        plugins : 'advlist autolink link preview searchreplace table image media lists preview anchor autosave directionality emoticons hr wordcount code bdmap',
+       // images_upload_url: '/demo/upimg.php',
+        images_upload_base_path: '/demo',
+        images_upload_url: '/tinymce',
+        backcolorpicker:['backcolor_desc','mceBackColor'],
+    });
+
+        // tinymce.get('mytextarea').setContent('...');
+        // var content = tinymce.get('mytextarea').getContent();
+
+        // images_upload_handler: function(blobInfo, success, failure) {
+        //     var form = new FormData();
+        //     form.append('files', blobInfo.blob(), blobInfo.filename());
+        //     $.ajax({
+        //         url: "/image/upload",
+        //         type: "post",
+        //         data: form,
+        //         processData: false,
+        //         contentType: false,
+        //         success: function(data) {
+        //             success(data.location);
+        //         },
+        //         error: function(e) {
+        //             alert("图片上传失败");
+        //         }
+        //         });
+        //     }
+
+        //     file_picker_callback: function(callback, value, meta) {
+
+        //                 var input = document.createElement('input');
+        //                 input.setAttribute('type', 'file');
+        //                 input.onchange = function() {
+        //                     var file = this.files[0];
+        //                     var form = new FormData();
+        //                     form.append("files", file); 
+        //                     $.ajax({
+        //                         url: "/image/upload",
+        //                         type: "post",
+        //                         data: form,
+        //                         processData: false,
+        //                         contentType: false,
+        //                         success: function(data) {
+        //                             callback(data.location);
+        //                         },
+        //                         error: function(e) {
+        //                             alert("图片上传失败");
+        //                         }
+        //                     });
+        //                 };
+
+        //                 input.click();
+
+        //             }
+
+        // KindEditor.ready(function(K) {
+        //     window.editor = K.create('#editor_id');
+        // });
+
+        // var options = {
+        // cssPath : '/css/index.css',
+        // filterMode : true
+        // };
+        // var editor = K.create('textarea[name="content"]', options);
+    </script>
+</body>
+</html>

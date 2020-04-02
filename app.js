@@ -2,12 +2,17 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+//var multipartMiddleware = multipart(); 
 var logger = require('morgan');
+var formidable = require('formidable');
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
+var tinymceRouter = require('./routes/tinymce');
+var aaRouter = require('./routes/aa');
 
 var app = express();
 
@@ -26,6 +31,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/tinymce', tinymceRouter);
+app.use('/aa', aaRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
