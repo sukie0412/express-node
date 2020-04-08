@@ -49,35 +49,6 @@
             contextmenu: "paste", //右键
             backcolorpicker: ['backcolor_desc', 'mceBackColor'],
             automatic_uploads: true,
-            // 图片异步上传处理函数
-            // images_upload_handler: function(blobInfo, success, failure){
-            //     var xhr, formData;
-            //     console.log('blobInfo',blobInfo.blob())
-            //     xhr = new XMLHttpRequest();
-            //     xhr.withCredentials = false;
-            //     xhr.open("POST", "aa");
-            //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-            //     formData = new FormData();
-            //     formData.append("file", blobInfo.blob());
-            //     xhr.onload = function(e){
-            //             var json;
-            //             if (xhr.status != 200) {
-            //                 failure('HTTP Error: ' + xhr.status);
-            //                 return;
-            //             }
-            //             json = JSON.parse(this.responseText);
-            //             console.log('json---',json)
-            //             if (!json || typeof json.location != 'string') {
-            //                 failure('Invalid JSON: ' + xhr.responseText);
-            //                 return;
-            //             }
-            //            // success(json.location);
-            //             success('http://172.16.0.252:80//uploader/20200319041913906.jpg');
-            //     };
-            //     //方法用于发送 HTTP 请求。如果是异步请求（默认为异步请求），则此方法会在请求发送后立即返回；如果是同步请求，则此方法直到响应到达后才会返回。
-            //     console.log(formData.get('file'));
-            //     xhr.send(formData);
-            // },
             images_upload_handler: function(blobInfo, success, failure) {
                 var formData = new FormData();
                 formData.set('files', blobInfo.blob());
@@ -100,26 +71,19 @@
                 });
             },
             paste_data_images: true,
-            paste_preprocess: function(plugin, args) {
-                args.content = args.content.replace("<img", "<img id=\" pasted_image_" + parseInt(globalcounter) + "\"");
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(){
-                    if (this.readyState == 4 && this.status == 200){
-                        upload(this.response);
-                    }
-                };
-                xhr.open('GET', args.content.split('"')[3]);
-                xhr.responseType = ' blob'; xhr.send(); function upload(BlobFile){ var x=new XMLHttpRequest();
-                        x.onreadystatechange=function(){ if( this.readyState==4 && this.status==200 ){ /* 返回的访问链接 */
-                        data=this.responseText; console.log('response data: ' + data);
-                            id = parseInt(globalcounter++);
-                            /* 此处为获取ID为mce_1_ifr的iframe，再获取其下ID为pastes_image_x 的图片，然后更改图片的链接。不同版本下iframe的ID可能会不同，注意观察 */
-                            document.getElementById("blog-content_ifr").contentWindow.document.getElementById("pasted_image_" + id).setAttribute("src", data);
+            setup : function(ed) {
+                ed.on('KeyDown',function(e){
+
+                    if((e.keyCode == 8 || e.keyCode == 46)&& editor.selection){// delete& backspace keys
+
+                        var selectedNode = editor.selection.getNode(); //在编辑器中获取所选节点（元素）
+
+                        if(selectedNode&& selectedNode.nodeName =='IMG'){
+
+                            MyCallback(selectedNode.src); //一个回调，它允许我调用服务器上的图像删除（如果适用于图像源）。
                         }
-                    };
-                    /* 使用post方法，上传的API为http://localhost:8080/uploadimg  */
-                    x.open(' POST', '/aaa' ); x.send(BlobFile); 
-                } 
+                    }
+                });
             }
         });
 

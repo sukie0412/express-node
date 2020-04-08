@@ -6,19 +6,98 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
     <script src="javascripts/jquery.min.js"></script>
+    <script src="javascripts/layer/layer.js"></script>
+    <style>
+        body{
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+        .box{
+            width: 60%;
+            height: 500px;
+            border: 1px solid rgb(214, 214, 214);
+            border-radius: 15px;
+            margin-left: 20%;
+            margin-top: 5%;
+            box-shadow: 10px 10px 5px #eee;
+        }
+        .loginBox{
+            display: inline-block;
+            padding: 50px 150px;
+        }
+        .title{
+            text-align: center;
+        }
+        label{
+            display: block;
+            margin-top: 50px;
+        }
+        label p{
+            font-size: 14px;
+        }
+        input{
+            border: none;
+            border-bottom: 1px solid #ccc;
+            width: 300px;
+        }
+        .imgBox{
+            float: right;
+            width: 500px;
+            height: 100%;
+            overflow: hidden;
+        }
+        .imgBox img{
+            height: 100%;
+            width: 100%;
+            border-radius: 0px 15px 15px 0px;
+            /* object-fit: none; */
+            /* background-repeat: no-repeat;
+            background-position:center center;
+            background-size: cover; */
+        }
+        .submit_btn{
+            width: 150px;
+            height: 40px;
+            background-color: rgb(114, 149, 214);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+        }
+        .submit_btn:hover{
+            background-color: rgb(228, 140, 108);
+        }
+        .tip{
+            font-size: 12px;
+        }
+        .tip:hover{
+            color:rgb(228, 140, 108);
+        }
+
+    </style>
 </head>
 <body>
-    <label>
-        username:
-        <input type="text" class="username" />
-    </label>
-    <label>
-        password:
-        <input type="text" class="password" />
-    </label>
-    <button onclick="login()">submit</button>
-    <div>
-        <a href="register.html">没有账号，点我注册</a>
+    <div class="box">
+        <div class="loginBox">
+            <h2 class="title">登录</h2>
+            <label>
+                <p>用户名</p>
+                <input type="text" class="username" />
+            </label>
+            <label>
+                <p>密码</p>
+                <input type="password" class="password" />
+            </label>
+            <label style="text-align: center">
+                <button class="submit_btn" onclick="login()">登录</button>
+            </label>
+            <p style="text-align: center;">
+                <a class="tip" href="register.html">没有账号，点我注册</a>
+            </p>
+        </div>
+        <div class="imgBox">
+            <img src="images/natural.jpg">
+        </div>
     </div>
     <script>
         //获取IP
@@ -41,10 +120,10 @@
                 data: dataJson,
                 success: function (data) {
                     if(data.result == true){
-                        console.log('登录成功');
+                        layer.msg('登录成功');
                         window.location.href = 'index.html';
                     }else{
-                        console.log('账号/密码不正确');
+                        layer.msg('账号/密码不正确');
                     }
                 },
                 error: function (err) {
