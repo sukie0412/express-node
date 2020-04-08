@@ -1,49 +1,29 @@
 var express = require('express');
 var router = express.Router();
 var formidable = require('formidable');
-//var multipartMiddleware = multipart(); 
+var multiparty = require('multiparty');
 
-// let bodyParser = require('body-parser');
 let db = require('../server/config/db');
 
 /* POST login page */
-router.post('/', function(req, res, next) {
-    console.log('upload------------')
-    var currentData = req.body;
-   // console.log('currentData',currentData);
-    var form = new formidable.IncomingForm();
-        console.log(0)
-        form.encoding = 'utf-8'; //编码
-        form.uploadDir = 'images/upload'; //存储路径
-        form.keepExtensions = true; //保留扩展名
-        form.maxFileSize = 2 * 1024 * 1024; //文件大小
-        form.parse(req, function(err, fileds, files){ // 解析 formData数据
-            console.log(11111,req.body)
-            console.log(22222,files.img);
-            if(err){return console.log(err)}
+router.post('/upload', function(req, res, next) {
 
-            let imgPath = files.img.path;  //获取文件路径
-            console.log('imgPath'+imgPath);
-            let imgName = "./test."+ files.img.type.split("/")[1]; //修改之后的名字
-            let data = fs.readFileSync('imgPath'); //同步读取文件
-            console.log('imgName'+imgName)
-            fs.wirteFile(imgName,data,function(err){  //存储文件
-                if(err) return console.log(err);
-                fs.unlink(imgPath,function(){  //删除文件
-                    res.json({imgPath})
-                })
-            })
-        })
-        //form.onPart(part);
+    var form = new multiparty.Form();  //解析一个文件上传
+    form.encoding = 'utf-8';  //设置编码
+    form.uploadDir = './public/upload';  //设置文件储存路径
+    form.maxFilesSize = 2 * 1024 * 1024;  //设置单文件大小限制
+    
+    form.parse(req, function(err, fields, files) {
+        if (err) {
+            throw err;
+        } else {
+            //fs.renameSync(files.path,files.originalFilename); //同步重命名文件名
+            let filePath = files.files[0].path;
+            let prePath = filePath.replace('public\\', '');
+            res.json({ files: prePath });
+        }
+    });
+    
 });
 
-// router.post('/', multipartMiddleware, function(req, res) {
-//   res.json({ result: 'success', data: req.body });
-// });
-
-router.post('/cc', function(req, res, next) {
-    console.log('ccccc------------');
-    var currentData = req.body;
-    console.log('currentData', currentData);
-});
 module.exports = router;
