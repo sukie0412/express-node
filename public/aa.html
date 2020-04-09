@@ -7,13 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>tinymce</title>
     <script type="text/javascript" src="javascripts/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="js/tinymce_5.2.1/tinymce/js/tinymce/jquery.tinymce.min.js" referrerpolicy="origin"></script> -->
     <script type="text/javascript" src="javascripts/tinymce/js/tinymce/tinymce.min.js"></script>
-    <!-- <script type="text/javascript" src="js/kindeditor/kindeditor-all-min.js"></script>
-    <script type="text/javascript" src="js/kindeditor/lang/zh-CN.js"></script> -->
-        <style>
-            
-        </style>
+
 </head>
 
 <body>
@@ -51,26 +46,45 @@
             automatic_uploads: true,
             images_upload_handler: function(blobInfo, success, failure) {
                 var formData = new FormData();
+                var type = blobInfo.blob().type.split('/')[0];
                 formData.set('files', blobInfo.blob());
+                if(type == 'image'){
+                    $.ajax({
+                        url: "/aa/upload",
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data) {
+                            success(data.files);
+                        },
+                        error: function(e) {
+                        }
+                    });
+                }
                 console.log(formData.get('files'))
-                $.ajax({
-                    url: "/aa/upload",
-                    type: "post",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    //contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-                    success: function(data) {
-                        console.log('success',data)
-                        success(data.files);
-                    },
-                    error: function(e) {
-                        //alert("图片上传失败");
-                        //success('http://172.16.0.252:80//uploader/20200319041913906.jpg');
-                    }
-                });
             },
             paste_data_images: true,
+            // paste_preprocess: function(plugin, args) {
+                //     args.content = args.content.replace("<img", "<img id=\" pasted_image_" + parseInt(globalcounter) + "\"");
+                //     var xhr = new XMLHttpRequest();
+                //     xhr.onreadystatechange = function(){
+                //         if (this.readyState == 4 && this.status == 200){
+                //             upload(this.response);
+                //         }
+                //     };
+                //     xhr.open('GET', args.content.split('"')[3]);
+                //     xhr.responseType = ' blob'; xhr.send(); function upload(BlobFile){ var x=new XMLHttpRequest();
+                //             x.onreadystatechange=function(){ if( this.readyState==4 && this.status==200 ){ /* 返回的访问链接 */
+                //             data=this.responseText; console.log('response data: ' + data);
+                //                 id = parseInt(globalcounter++);
+                //                 /* 此处为获取ID为mce_1_ifr的iframe，再获取其下ID为pastes_image_x 的图片，然后更改图片的链接。不同版本下iframe的ID可能会不同，注意观察 */
+                //                 document.getElementById("blog-content_ifr").contentWindow.document.getElementById("pasted_image_" + id).setAttribute("src", data);
+                //             }
+                //         };
+                //         x.open(' POST', '/aaa' ); x.send(BlobFile); 
+                //     } 
+                // }
             setup : function(ed) {
                 ed.on('KeyDown',function(e){
 
@@ -87,64 +101,6 @@
             }
         });
 
-        // tinymce.get('mytextarea').setContent('...');
-        // var content = tinymce.get('mytextarea').getContent();
-
-        // images_upload_handler: function(blobInfo, success, failure) {
-        //     var form = new FormData();
-        //     form.append('files', blobInfo.blob(), blobInfo.filename());
-        //     $.ajax({
-        //         url: "/image/upload",
-        //         type: "post",
-        //         data: form,
-        //         processData: false,
-        //         contentType: false,
-        //         success: function(data) {
-        //             success(data.location);
-        //         },
-        //         error: function(e) {
-        //             alert("图片上传失败");
-        //         }
-        //         });
-        //     }
-
-        //     file_picker_callback: function(callback, value, meta) {
-
-        //                 var input = document.createElement('input');
-        //                 input.setAttribute('type', 'file');
-        //                 input.onchange = function() {
-        //                     var file = this.files[0];
-        //                     var form = new FormData();
-        //                     form.append("files", file); 
-        //                     $.ajax({
-        //                         url: "/image/upload",
-        //                         type: "post",
-        //                         data: form,
-        //                         processData: false,
-        //                         contentType: false,
-        //                         success: function(data) {
-        //                             callback(data.location);
-        //                         },
-        //                         error: function(e) {
-        //                             alert("图片上传失败");
-        //                         }
-        //                     });
-        //                 };
-
-        //                 input.click();
-
-        //             }
-
-        // KindEditor.ready(function(K) {
-        //     window.editor = K.create('#editor_id');
-        // });
-
-        // var options = {
-        // cssPath : '/css/index.css',
-        // filterMode : true
-        // };
-        // var editor = K.create('textarea[name="content"]', options);
-
         function cd(){
             tinyMCE.activeEditor.setContent('设置默认文本');
             $.ajax({
@@ -158,15 +114,6 @@
                 }
             });
         }
-        // <p><strong>nj<span style="background-color: #e03e2d; color: #ecf0f1;">njnjbb你今</span>年可<span
-        //             style="font-size: 24px;"><a id="nj"></a>能尽快</span></strong></p>
-        // <p><strong><span style="font-size: 24px;"><img style="display: block; margin-left: auto; margin-right: auto;"
-        //                 src="http://172.16.0.252:80//uploader/20200319041913906.jpg" alt="11" width="137"
-        //                 height="140" /></span></strong></p>
-        // <hr />
-        // <p><strong><span style="font-size: 24px;"><video controls="controls" width="300" height="150">
-        //                 <source src="http://img.ksbbs.com/asset/Mon_1703/d30e02a5626c066.mp4" type="video/mp4" />
-        //                 </video></span></strong></p>
     </script>
 </body>
 

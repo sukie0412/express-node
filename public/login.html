@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
-    <script src="javascripts/jquery.min.js"></script>
-    <script src="javascripts/layer/layer.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/layui/layui.js"></script>
+    <!-- <script src="javascripts/layer/layer.js"></script> -->
     <style>
         body{
             background: #fff;
@@ -40,6 +41,9 @@
             border: none;
             border-bottom: 1px solid #ccc;
             width: 300px;
+            height: 30px;
+            /* 去除获取焦点时的边框 */
+            outline: none; 
         }
         .imgBox{
             float: right;
@@ -100,6 +104,9 @@
         </div>
     </div>
     <script>
+        layui.use('layer', function(){
+            var layer = layui.layer;
+        });
         //获取IP
         function getHost() {
             var host = window.location.host;
