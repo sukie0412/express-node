@@ -1,8 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var cookieSession = require('cookie-session');
 
 let db = require('../server/config/db');
 
+router.use(
+    cookieSession({
+        name: 'isLogin',
+        keys: ['aaa'],
+        maxAge: 2 * 60 * 1000,
+        isLogin: 'true'
+    })
+);
 /* POST login page */
 router.post('/',function(req, res, next){
     console.log('register----')
@@ -19,6 +28,7 @@ router.post('/',function(req, res, next){
             let insertSQL = "insert into user(id,username,password) values(id,'"+ name +"','"+ psw +"')";
             db.query(insertSQL, function(err, rs) {
                 if (err) throw err;
+                req.session.isLogin = true;
                 res.json({ result: true });
             });
         }

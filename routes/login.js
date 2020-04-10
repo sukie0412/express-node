@@ -1,5 +1,7 @@
-var express = require('express');
+var express = require('express'); //引入框架
 var router = express.Router();
+var cookieSession = require('cookie-session'); //引入解析模块
+var app = express(); //创建服务器
 
 let db = require('../server/config/db');
 
@@ -7,6 +9,15 @@ let db = require('../server/config/db');
 router.get('/',function(req, res, next){
     res.render('login', { title: '登录' });
 })
+
+router.use(
+    cookieSession({
+    name: 'isLogin',
+    keys: ['aaa'],
+    maxAge: 2 * 60 * 1000,
+    isLogin: 'true'
+    })
+);
 
 /* POST login page */
 router.post('/',function(req, res, next){
@@ -23,11 +34,14 @@ router.post('/',function(req, res, next){
         if (err) {
             throw err;
         }else if(rows.length != 0){
+            req.session.isLogin = true;
+                console.log('req.session.isLogin', req.session.isLogin);
             res.json({ result: true });
         }else{
             res.json({ result: false });
         }
     });
+    // req.session.isLogin = true;
     // if(currentData.username == 'admin' && currentData.password == '123'){
     //     var str = {"result":{"username":currentData.username,"password":currentData.password},"code":1};
     // }else{

@@ -1,7 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var cookieSession = require('cookie-session');
 
 let db = require("../server/config/db");
+
+router.use(
+  cookieSession({
+    name: 'isLogin',
+    keys: ['aaa'],
+    maxAge: 2 * 60 * 1000,
+    isLogin: 'true'
+  })
+);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -18,4 +28,9 @@ router.get('/first',(req, res, next) => {
         }
     })
 })
+
+router.post('/logout', (req, res, next) => {
+    res.json({ result: true });
+    req.session.isLogin = null;
+});
 module.exports = router;
