@@ -30,7 +30,7 @@ router.get('/first',(req, res, next) => {
 })
 
 router.post('/logout', (req, res, next) => {
-    res.json({ result: true });
     req.session.isLogin = null;
+    res.json({ result: true });
 });
 module.exports = router;

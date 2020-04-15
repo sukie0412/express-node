@@ -25,7 +25,6 @@ router.post('/',function(req, res, next){
     var currentData = req.body;
     var name = req.body.username;
     var psw = req.body.password;
-    console.log(currentData);
 
     //模拟数据库查询判断，设置返回数据str
     var selectSQL = "select * from user where username = '"+ name +"' and password = '"+ psw +"' ";

@@ -43,7 +43,9 @@
             plugins: 'advlist autolink link preview paste searchreplace table image media lists preview anchor directionality emoticons hr wordcount code bdmap',
             contextmenu: "paste", //右键
             backcolorpicker: ['backcolor_desc', 'mceBackColor'],
-            automatic_uploads: true,
+            automatic_uploads: true, 
+            relative_urls : false,  //图片不为相对路径
+            remove_script_host : false, //图片不为相对路径
             images_upload_handler: function(blobInfo, success, failure) {
                 var formData = new FormData();
                 var type = blobInfo.blob().type.split('/')[0];

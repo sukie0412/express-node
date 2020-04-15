@@ -2,8 +2,23 @@ var express = require('express');
 var router = express.Router();
 var formidable = require('formidable');
 var multiparty = require('multiparty');
+var cookieSession = require('cookie-session');
 
 let db = require('../server/config/db');
+
+router.get('/', function(req, res, next) {
+    res.send('11111');
+    console.log('我走了这个方法')
+    res.redirect('www.baidu.com');
+    // console.log('aa---------req.session.isLogin',req.session.isLogin);
+    // if (req.session.isLogin == undefined) {
+    //     res.redirect('/login.html');
+    //     //res.render('/login.html'); 
+    //     console.log('--未登录')
+    //     //res.send('请先登录,3秒后跳转' );
+    // }
+});
+
 
 /* POST login page */
 router.post('/upload', function(req, res, next) {
