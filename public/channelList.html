@@ -13,7 +13,7 @@
         }
         .dateList li{
             display: inline-block;
-            padding: 0 20px;
+            padding: 8px 30px;
             text-align: center;
             cursor: pointer;
         }
@@ -21,10 +21,17 @@
             display: block;
             text-align: center;
         }
+        .showListBox{
+            border-top: 1px solid #ccc;
+        }
+
         .active{
             background: rgb(204, 54, 54);
             color: #fff;
             border-radius: 5px;
+        }
+        .title{
+            padding-left: 60px;
         }
     </style>
 </head>
@@ -33,16 +40,21 @@
     <div class="content">
         <ul class="dateList"></ul>
         <div class="showListBox">
-            <ul class="channelList">
-            </ul>
+            <p class="title">当前频道：<span class="channelName"></span></p>
             <div class="TVList">
-
+                <div class="am"></div>
+                <div class="pm"></div>
             </div>
         </div>
     </div>
     <script>
         $(function(){
             initDateList();
+        })
+
+        $(document).ready(function(){
+            //$('.channelName').text(getParmeter(channelName))
+            $('.channelName').text("广东卫视高清");
         })
 
         function getWeekDate(){
@@ -88,26 +100,48 @@
         $(document).on("click",".dateList li",function(){
             $(this).addClass("active");
             $(this).siblings("li").removeClass("active");
+            var channelName = $('.channelName').text();
             var dateTemp = $(this).find(".dateTemp").text();
-            var dataJson = {}
-            // $.ajax({
-            //     type:"get",
-            //     url:"",
-            //     data: formData,
-            //     processData: false,
-            //     contentType: false,
-            //     success:function(){
+            var start = new Date(dateTemp+" "+"00:00:00");
+            var end = new Date(dateTemp+" "+"23:59:59");
+            var startUnix = start.getTime();
+            var endUnix = end.getTime();
+            console.log("开始时间", start.getTime());
+            console.log("结束时间", end.getTime());
+            var dataJson = {"channelName":channelName,"startDateTime":startUnix,"endDateTime":endUnix}
+            console.log(dataJson)
+            $.ajax({
+                type:"get",
+                url:"getPrograms.json",
+                data: dataJson,
+                contentType :"application/json",
+                dataType: "json",
+                scriptCharset: 'utf-8',
+                success:function(data){
+                    console.log(data)
+                    var data = data.program;
 
-            //     },error:function(err){
+                },error:function(err){
 
-            //     }
-            // })
+                }
+            })
         })
 
         function getNowTmp(){
             var tmp = Date.parse( new Date() ).toString();
             tmp = tmp.substr(0,10);
             console.log(tmp);
+        }
+
+        //获取url参数
+        function getParmeter(variable){
+            let query = window.location.href.split('?')[1]; 
+            let vars = query.split('&'); 
+            for (let i = 0; i < vars.length; i++) { 
+                if(pair[0] === variable){ 
+                    return pair[1]; 
+                }
+            }
         }
     </script>
 </body>
