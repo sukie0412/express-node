@@ -10,6 +10,7 @@
     <style>
         .dateList{
             list-style-type: none;
+            text-align: center;
         }
         .dateList li{
             display: inline-block;
@@ -19,10 +20,11 @@
         }
         .dateList li span{
             display: block;
-            text-align: center;
+            
         }
         .showListBox{
             border-top: 1px solid #ccc;
+            
         }
 
         .active{
@@ -33,17 +35,33 @@
         .title{
             padding-left: 60px;
         }
+        .genresTitle{
+            padding: 8px 20px;
+            background: #eee;
+        }
     </style>
 </head>
 
 <body>
-    <div class="content">
+    <div class="content row">
         <ul class="dateList"></ul>
-        <div class="showListBox">
+        <div class="showListBox" >
             <p class="title">当前频道：<span class="channelName"></span></p>
             <div class="TVList">
-                <div class="am"></div>
-                <div class="pm"></div>
+                <div class="am">
+                    <p class="genresTitle">上午 (00:00 - 12:00)<span></span></p>
+                    <table>
+                        <tbody class="amList">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pm">
+                    <p class="genresTitle">下午 (12:00 - 24:00)</p>
+                    <table>
+                        <tbody class="pmList">
+                        </tbody>
+                    </table>
+                    </div>
             </div>
         </div>
     </div>
@@ -94,6 +112,9 @@
                 }
                 $(".dateList").append("<li><span>星期"+ week +"</span><span class='dateTemp'>"+ data[i].dateTemp +"</span></li>")
             }
+            // for(var j=0;j<$(".dateList li").length;i++){
+
+            // }
         }
 
         //$(".dateList li").click(function(){
@@ -118,9 +139,27 @@
                 dataType: "json",
                 scriptCharset: 'utf-8',
                 success:function(data){
-                    console.log(data)
-                    var data = data.program;
+                    console.log(data.program)
+                    var data = data.program.reverse();
+                    for(var i = 0;i<data.length;i++){
+                        var getTimeGenres = data[i].beginTime.split(' ')[1];
+                        var getHour = getTimeGenres.split(":")[0];
+                        var getmin = getTimeGenres.split(":")[1];
+                        if(Number(getHour)< 12){
+                            $(".TVList .amList").append("<tr class='detail'>"+
+                                "<td class='time'>"+getHour+":"+getHour+"</td>"+
+                                "<td class='text'>"+data[i].programName+"</td>"+
+                                "<td class='other'><a>回看</a></td>"+
+                            "</tr>");
+                        }else{
+                            $(".TVList .pmList").append("<tr class='detail'>"+
+                                "<td class='time'>"+getHour+":"+getHour+"</td>"+
+                                "<td class='text'>"+data[i].programName+"</td>"+
+                                "<td class='other'><a>回看</a></td>"+
+                            "</tr>");
+                        }
 
+                    }
                 },error:function(err){
 
                 }
@@ -138,6 +177,7 @@
             let query = window.location.href.split('?')[1]; 
             let vars = query.split('&'); 
             for (let i = 0; i < vars.length; i++) { 
+                var pair = vars[i].split("=");
                 if(pair[0] === variable){ 
                     return pair[1]; 
                 }

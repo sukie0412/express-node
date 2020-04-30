@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/ckplayer/ckplayer.js"></script>
+    <style>
+        .textbox{
+            width: 300px;
+            height: 30px;
+            border:1px solid #ccc;
+            border-radius: 8px;
+            margin: 15px 0px;
+        }
+        .submit{
+            width: 60px;
+            height: 30px;
+            line-height: 30px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            background: rgb(212, 115, 115);
+        }
+    </style>
+</head>
+<body>
+    <laebl>
+        <span>输入流地址：</span>
+        <input type="text" class="textbox" />
+        <button class="submit" onclick="submit()">提交</button>
+    </laebl>
+    <div id="video" style="width:100%;height:100%"></div>
+
+    <script>
+        function submit(){
+            var url = $(".textbox").val();
+            showPlayer(url,"player");
+        }
+        
+        showPlayer('http://img.ksbbs.com/asset/Mon_1703/eb048d7839442d0.mp4','player')
+        function showPlayer(src, id) {
+            console.log(src)
+            var videoObject = {
+                //playerID:'ckplayer01',//播放器ID，第一个字符不能是数字
+                container: '#video', //容器ID或className
+                variable: 'player', //播放函数名称
+                loaded: 'loadedHandler', //当播放器加载后执行的函数
+                loop: true, //播放结束是否循环播放
+                autoplay: true, //是否自动播放
+                //duration: 500, //设置视频总时间
+                cktrack: 'material/srt.srt', //字幕文件
+                poster: 'material/poster.jpg', //封面图片
+                config: '', //制定配置函数
+                debug: false, //是否开启调试模式
+                flashplayer: false, //flashplayer
+                drag: 'start', //拖动的属性
+                seek: 0, //默认跳转的时间
+                playbackrate: 1, //默认速度的编号，只对html5有效，设置成-1则不显示倍数
+                //advertisements:'website:ad.json',
+                //front:'frontFun',//上一集的操作函数
+                //next:'nextFun',//下一集的操作函数
+                live: false, //true=直播false=点播
+                video: src
+            };
+
+            var player = new ckplayer(videoObject);
+
+        }
+
+            function loadedHandler() {
+                console.log('开始播放');
+                if (videoObject.getObjectById('video').getType()) {
+                    videoObject.getObjectById('video').addListener('ended', endedHandler);
+                } else {
+                    videoObject.getObjectById('video').addListener('ended', 'endedHandler');
+                }
+            }
+    </script>
+</body>
+</html>

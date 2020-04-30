@@ -6,6 +6,7 @@ var cookieSession = require('cookie-session');
 var logger = require('morgan');
 var formidable = require('formidable');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
 
 
 var indexRouter = require('./routes/index');
@@ -26,33 +27,40 @@ app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public')); // public 目录下的资源对外开放访问
 
-app.use('/', indexRouter);
+app.use('/index', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/aa', aaRouter);
 
+// app.use(
+//     cookieSession({
+//         secret:settings.cookieSecret, //加密
+//         keys: settings.db,
+//         maxAge: 2 * 60 * 1000,
+//     })
+// );
+app.use(
+    cookieSession({
+        keys: ['bbb'],
+        maxAge: 2 * 60 * 1000
+    })
+);
+app.use(flash());
 
 app.use(function(req, res, next) {
     console.log('看我');
     console.log('app----req.session.isLogin', req.session.isLogin);
     if (req.session.isLogin == undefined) {
-        //res.send('请先登录,3秒后跳转' );
-        //res.redirect('/login.html');
+        req.flash('error', '请先登录');
+        res.redirect('/login.html');
         console.log('--未登录');
-        return;
     }else{
         // catch 404 and forward to error handler
         next(createError(404));
     }
 });
 
-
-app.use(function(req, res, next) {
-    console.log('app----req.session.isLogin', req.session.isLogin);
-    //res.redirect('/');
-    //next(createError(404));
-});
 
 // error handler
 app.use(function(err, req, res, next) {

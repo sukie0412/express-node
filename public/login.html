@@ -7,6 +7,7 @@
     <title>登录</title>
     <script type="text/javascript" src="javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/layui/layui.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.cookie.js"></script>
     <!-- <script src="javascripts/layer/layer.js"></script> -->
     <style>
         body{
@@ -128,7 +129,8 @@
                 success: function (data) {
                     if(data.result == true){
                         layer.msg('登录成功');
-                        window.location.href = 'index.html';
+                        $.cookie("username",username,{ expires: 1 });
+                        window.location.href = '/index.html';
                     }else{
                         layer.msg('账号/密码不正确');
                     }
